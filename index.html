@@ -101,6 +101,8 @@ const icon=(name)=>{const paths={wallet:'<rect x="3" y="5" width="18" height="14
 const TELEGRAM_MINI_APP_URL='https://t.me/TakarHat_Bot/TakarHat';
 // Telegram user data is optional: the app must also run safely in a normal browser.
 const tgUser=(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initDataUnsafe&&window.Telegram.WebApp.initDataUnsafe.user)||{};
+// Telegram ID helper: safely falls back to the saved profile when opened outside Telegram.
+function currentTelegramId(){const id=tgUser&&tgUser.id;return id!=null&&id!==''?String(id):String((profile&&profile.telegramId)||'')}
 const DEFAULTS={appName:'Takar Hat',tagline:'Rewards & Wallet',telegramChannelLink:'',telegramFeedbackLink:'',rewardPaisa:20,minWithdrawPaisa:1000,referralRewardPaisa:0,dailyLimit:10,cooldownEvery:3,cooldownMinutes:5,blockId:'',withdrawalsEnabled:true,adsEnabled:true,maintenance:false,payments:{bkash:true,nagad:true,rocket:true},withdrawalFees:{bkash:0,nagad:0,rocket:0},withdrawNote:'Withdrawal requests are reviewed manually. Processing time may vary.',rewardTerms:'No reward is given for failed or skipped ads.'};
 let app,auth,db,user=null,uid=null,heartbeatTicker=null,firebaseReferralCode='',config={...DEFAULTS,payments:{...DEFAULTS.payments}},profile={},wallet={},stats={},claims={},withdrawals={},notices={},noticeState={},referralData={},leaderboardData={},userSettings={},serverTimeOffset=0,listenRefs=[],busy=false,toastTimer,dailyResetTicker=null,lastLeaderboardPayloadKey='',referralCount=0,referralCountQuery=null,referralRowsCache={};
 function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),3100)}
